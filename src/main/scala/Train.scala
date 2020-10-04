@@ -1,3 +1,4 @@
+import domain.{Card, Match, Profile}
 import org.apache.spark.ml.recommendation.ALS
 import org.apache.spark.sql.SparkSession
 
@@ -9,14 +10,25 @@ object Train {
     val colItem = "card"
     val colRating = "rating"
 
-    implicit val sparkSession: SparkSession = SparkSession
-      .builder
-      .appName(this.getClass.getSimpleName)
-      .master("local[*]")
-      .getOrCreate()
+    implicit val sparkSession: SparkSession = buildSparkSession()
 
-    val data = DataProcessing.readMatches()
-    data.show()
+    import sparkSession.implicits._
+
+    val matches = DataProcessing
+      .readCollection(MongoConf.collectionMatches)
+      .as[Match]
+
+    val cards = DataProcessing
+      .readCollection(MongoConf.collectionCards)
+      .as[Card]
+
+    val profiles = DataProcessing
+      .readCollection(MongoConf.collectionProfiles)
+      .as[Profile]
+
+    matches.show()
+    cards.show()
+    profiles.show()
 
     val als = new ALS()
       .setMaxIter(5)
@@ -24,13 +36,23 @@ object Train {
       .setUserCol(colUser)
       .setItemCol(colItem)
       .setRatingCol(colRating)
-    val model = als.fit(data)
+    val model = als.fit(matches)
 
     model.itemFactors.show()
     model.userFactors.show()
     model
       .recommendForAllUsers(2)
       .show()
+  }
 
+  def buildSparkSession(): SparkSession = {
+    val sparkSession: SparkSession = SparkSession
+      .builder()
+      .master("local[*]")
+      .appName(this.getClass.getSimpleName)
+      .config("spark.mongodb.input.uri", MongoConf.getUri(MongoConf.collectionMatches))
+      .getOrCreate()
+    sparkSession.sparkContext.setLogLevel("WARN")
+    sparkSession
   }
 }

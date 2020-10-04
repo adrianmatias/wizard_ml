@@ -1,8 +1,10 @@
 package domain
 
 case class Match(
-                datetime: String,
-                card: Long,
-                profile: Long,
-                rating: Long
-                )
+                  datetime: String,
+                  card: Long,
+                  profile: Long,
+                  rating: Long
+                ) {
+  val isValid: Boolean = 0 <= rating & rating <= 5
+}
