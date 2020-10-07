@@ -26,7 +26,7 @@ object Infer {
     model
       .recommendForUserSubset(
         getProfileDF(profileIds),
-        numItems = 3
+        numItems = Wizard.nRecommendedCards
       )
       .as[Recomendation]
       .collect()
