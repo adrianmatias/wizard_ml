@@ -9,16 +9,5 @@ object DataProcessing {
       "uri" -> MongoConf.getUriShort,
       "collection" -> collection
     ), Some(ReadConfig(sparkSession))))
-
-  def buildSparkSesion(collection: String): SparkSession = {
-    val sparkSession = SparkSession
-      .builder
-      .appName(this.getClass.getSimpleName)
-      .master("local[*]")
-      .config("spark.mongodb.input.uri", MongoConf.getUri(collection))
-      .getOrCreate()
-    sparkSession.sparkContext.setLogLevel("WARN")
-    sparkSession
-  }
 }
 

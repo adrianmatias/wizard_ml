@@ -8,5 +8,5 @@ case class Card(
                  keywords: Seq[String],
                  // meanings: Map[String, Seq[String]]  //TODO: define meanings field
                ) {
-  val isValid: Boolean = name.nonEmpty & keywords.nonEmpty
+  lazy val isValid: Boolean = name.nonEmpty & keywords.nonEmpty
 }

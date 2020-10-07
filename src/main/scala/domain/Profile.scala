@@ -5,5 +5,5 @@ case class Profile(
                     name: String,
                     description: Map[String, Int],
                   ) {
-  val isValid: Boolean = description.nonEmpty
+  lazy val isValid: Boolean = description.nonEmpty
 }

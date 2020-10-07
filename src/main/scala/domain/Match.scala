@@ -6,5 +6,5 @@ case class Match(
                   profile: Long,
                   rating: Long
                 ) {
-  val isValid: Boolean = 0 <= rating & rating <= 5
+  lazy val isValid: Boolean = 0 <= rating & rating <= 5
 }

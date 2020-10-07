@@ -12,3 +12,4 @@ libraryDependencies += "org.mongodb.spark" %% "mongo-spark-connector" % sparkVer
 
 libraryDependencies += "org.scalactic" %% "scalactic" % scalatestVersion
 libraryDependencies += "org.scalatest" %% "scalatest" % scalatestVersion % "test"
+libraryDependencies += "com.typesafe" % "config" % "1.4.0"

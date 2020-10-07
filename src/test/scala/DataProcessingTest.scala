@@ -7,7 +7,7 @@ import org.apache.spark.sql.SparkSession
 
 class DataProcessingTest extends AnyFlatSpec with should.Matchers {
 
-  implicit val sparkSession: SparkSession = Train.buildSparkSession()
+  implicit val sparkSession: SparkSession = SparkSessionMongo.build(MongoConf.collectionMatches)
 
   import sparkSession.implicits._
 
