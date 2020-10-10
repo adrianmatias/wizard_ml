@@ -1,15 +1,28 @@
-name := "wizzard_ml"
+name := "wizard-ml"
 
-version := "0.1"
+version := "1.0-SNAPSHOT"
+
+lazy val root = (project in file(".")).enablePlugins(PlayScala)
+
+lazy val myFirstApplication = (project in file("."))
+  .enablePlugins(PlayScala)
+  .aggregate(ml)
+  .dependsOn(ml)
+
+lazy val ml = project
 
 scalaVersion := "2.12.12"
-val sparkVersion = "2.4.2"
-val scalatestVersion = "3.2.0"
 
-libraryDependencies += "org.apache.spark" %% "spark-sql" % sparkVersion
-libraryDependencies += "org.apache.spark" %% "spark-mllib" % sparkVersion
-libraryDependencies += "org.mongodb.spark" %% "mongo-spark-connector" % sparkVersion
+val reactiveMongoVer = "1.0.0-play26"
 
-libraryDependencies += "org.scalactic" %% "scalactic" % scalatestVersion
-libraryDependencies += "org.scalatest" %% "scalatest" % scalatestVersion % "test"
-libraryDependencies += "com.typesafe" % "config" % "1.4.0"
+libraryDependencies ++= Seq(
+  guice,
+  "org.reactivemongo"      %% "play2-reactivemongo" % reactiveMongoVer,
+  "io.swagger"             %% "swagger-play2"       % "1.7.1",
+  "org.webjars"            %  "swagger-ui"          % "3.22.2",
+  "org.scalatestplus.play" %% "scalatestplus-play"  % "5.0.0-M2" % Test
+)
+
+import play.sbt.routes.RoutesKeys
+
+RoutesKeys.routesImport += "play.modules.reactivemongo.PathBindables._"
