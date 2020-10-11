@@ -1,6 +1,6 @@
 package ml
 
-import domain.{Card, Match, Profile}
+import ml.domain.{Card, Match, Profile}
 import org.apache.spark.sql.SparkSession
 
 
@@ -12,12 +12,12 @@ object Train {
 
   def apply(): Unit = {
 
-    implicit val sparkSession: SparkSession = SparkSessionMongo.build(MongoConf.collectionMatches)
+    implicit val sparkSession: SparkSession = SparkSessionMongo.build(MongoConf.collectionMatchs)
 
     import sparkSession.implicits._
 
     val matches = DataProcessing
-      .readCollection(MongoConf.collectionMatches)
+      .readCollection(MongoConf.collectionMatchs)
       .as[Match]
 
     val cards = DataProcessing
@@ -28,17 +28,7 @@ object Train {
       .readCollection(MongoConf.collectionProfiles)
       .as[Profile]
 
-    matches.show()
-    cards.show()
-    profiles.show()
-
     val model = Modelling.buildModel().fit(matches)
-
-    model.itemFactors.show()
-    model.userFactors.show()
-    model
-      .recommendForAllUsers(Wizard.nRecommendedCards)
-      .show()
 
     Modelling.saveModel(model, path = Wizard.modelPath)
   }

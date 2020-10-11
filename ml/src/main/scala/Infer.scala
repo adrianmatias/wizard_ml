@@ -12,7 +12,7 @@ object Infer {
 
   def apply(): Unit = {
 
-    implicit val sparkSession: SparkSession = SparkSessionMongo.build(MongoConf.collectionMatches)
+    implicit val sparkSession: SparkSession = SparkSessionMongo.build(MongoConf.collectionMatchs)
 
     val model = Modelling.loadModel(Wizard.modelPath)
 

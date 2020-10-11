@@ -7,7 +7,7 @@ case object MongoConf {
   val db = "wizard"
   val collectionCards = "cards"
   val collectionProfiles = "profiles"
-  val collectionMatches = "matches"
+  val collectionMatchs = "matchs"
 
   def getUri(collection: String): String = s"$getUriShort$db.$collection"
 

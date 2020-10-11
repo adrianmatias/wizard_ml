@@ -2,25 +2,20 @@ package controllers
 
 import java.util.UUID
 
-import javax.inject.Inject
-
 import io.swagger.annotations._
-
+import javax.inject.Inject
 import models.{Todo, TodoRepository}
-
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, ControllerComponents}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-/**
-  * Created by Riccardo Sirigu on 10/08/2017.
-  */
+
 @Api(value = "/todos")
 class TodoController @Inject()(
-  cc: ControllerComponents,
-  todoRepo: TodoRepository) extends AbstractController(cc) {
+                                cc: ControllerComponents,
+                                todoRepo: TodoRepository) extends AbstractController(cc) {
 
   @ApiOperation(
     value = "Find all Todos",
@@ -28,7 +23,7 @@ class TodoController @Inject()(
     responseContainer = "List"
   )
   def getAllTodos = Action.async {
-    todoRepo.getAll.map{ todos =>
+    todoRepo.getAll.map { todos =>
       Ok(Json.toJson(todos))
     }
   }
@@ -39,12 +34,12 @@ class TodoController @Inject()(
     response = classOf[Todo]
   )
   @ApiResponses(Array(
-      new ApiResponse(code = 404, message = "Todo not found")
-    )
+    new ApiResponse(code = 404, message = "Todo not found")
+  )
   )
   def getTodo(@ApiParam(value = "The id of the Todo to fetch") todoId: UUID) =
     Action.async { req =>
-      todoRepo.getTodo(todoId).map{ maybeTodo =>
+      todoRepo.getTodo(todoId).map { maybeTodo =>
         maybeTodo.map { todo =>
           Ok(Json.toJson(todo))
         }.getOrElse(NotFound)
@@ -57,12 +52,17 @@ class TodoController @Inject()(
     code = 201
   )
   @ApiResponses(Array(
-      new ApiResponse(code = 400, message = "Invalid Todo format")
-    )
+    new ApiResponse(code = 400, message = "Invalid Todo format")
+  )
   )
   @ApiImplicitParams(Array(
-      new ApiImplicitParam(value = "The Todo to add, in Json Format", required = true, dataType = "models.Todo", paramType = "body")
+    new ApiImplicitParam(
+      value = "The Todo to add, in Json Format",
+      required = true,
+      dataType = "models.Todo",
+      paramType = "body"
     )
+  )
   )
   def createTodo() = Action.async(parse.json) {
     _.body.validate[Todo].map { todo =>
@@ -77,12 +77,17 @@ class TodoController @Inject()(
     response = classOf[Todo]
   )
   @ApiResponses(Array(
-      new ApiResponse(code = 400, message = "Invalid Todo format")
-    )
+    new ApiResponse(code = 400, message = "Invalid Todo format")
+  )
   )
   @ApiImplicitParams(Array(
-      new ApiImplicitParam(value = "The updated Todo, in Json Format", required = true, dataType = "models.Todo", paramType = "body")
+    new ApiImplicitParam(
+      value = "The updated Todo, in Json Format",
+      required = true,
+      dataType = "models.Todo",
+      paramType = "body"
     )
+  )
   )
   def updateTodo(@ApiParam(value = "The id of the Todo to update")
                  todoId: UUID) = Action.async(parse.json) { req =>

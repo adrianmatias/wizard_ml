@@ -9,7 +9,7 @@ class MongoConfTest extends AnyFlatSpec with should.Matchers {
   behavior of this.getClass.getSimpleName
 
   "getUri" should "provide correct uri" in {
-    MongoConf.getUri(MongoConf.collectionMatches) should be(s"mongodb://localhost:27017/wizard.matches")
+    MongoConf.getUri(MongoConf.collectionMatchs) should be(s"mongodb://localhost:27017/wizard.matches")
   }
 
   "getUriShort" should "provide correct uri" in {

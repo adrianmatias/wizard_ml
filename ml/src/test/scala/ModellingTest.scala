@@ -7,7 +7,7 @@ import org.scalatest.matchers._
 
 class ModellingTest extends AnyFlatSpec with should.Matchers {
 
-  implicit val sparkSession: SparkSession = SparkSessionMongo.build(MongoConf.collectionMatches)
+  implicit val sparkSession: SparkSession = SparkSessionMongo.build(MongoConf.collectionMatchs)
 
   behavior of this.getClass.getSimpleName
 
