@@ -3,7 +3,9 @@
 # ~~~~
 
 GET       /todos                      controllers.TodoController.getAllTodos
-GET       /matchs                      controllers.MatchController.getAllMatchs
+GET       /matchs                     controllers.MatchController.getAllMatchs
+GET       /cards                      controllers.CardController.getAllCards
+GET       /cards/:id                  controllers.CardController.getCard(id: Long)
 GET       /todos/:id                  controllers.TodoController.getTodo(id: java.util.UUID)
 + nocsrf
 POST      /todos                      controllers.TodoController.createTodo
