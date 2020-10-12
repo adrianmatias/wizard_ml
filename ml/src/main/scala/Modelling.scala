@@ -7,6 +7,7 @@ import org.apache.spark.ml.recommendation.{ALS, ALSModel}
 object Modelling {
 
   val filename = "recommendation_model"
+  val pathFilename = s"${Wizard.modelPath}/$filename"
 
   def buildModel(): ALS =
     new ALS()
@@ -16,13 +17,13 @@ object Modelling {
       .setItemCol(colCard)
       .setRatingCol(colRating)
 
-  def saveModel(aLSModel: ALSModel, path: String): Unit =
+  def saveModel(aLSModel: ALSModel): Unit =
     aLSModel
       .write
       .overwrite()
-      .save(s"$path/$filename")
+      .save(pathFilename)
 
-  def loadModel(path: String): ALSModel =
+  def loadModel(): ALSModel =
     ALSModel
-      .load(s"$path/$filename")
+      .load(pathFilename)
 }

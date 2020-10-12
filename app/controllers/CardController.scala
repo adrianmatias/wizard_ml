@@ -97,4 +97,21 @@ class CardController @Inject()(
       case _ => NotFound
     }
   }
+
+  @ApiOperation(
+    value = "Get a recommended Card",
+    response = classOf[Card]
+  )
+  @ApiResponses(Array(
+    new ApiResponse(code = 404, message = "Card not found")
+  )
+  )
+  def getCardRecommendation(@ApiParam(value = "The Profile id to recommend the Card to fetch") id: Long) =
+    Action.async { req =>
+      cardRepo.getCardRecommendation(profileId = id).map { maybeCard =>
+        maybeCard.map { card =>
+          Ok(Json.toJson(card))
+        }.getOrElse(NotFound)
+      }
+    }
 }

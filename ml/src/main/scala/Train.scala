@@ -30,6 +30,6 @@ object Train {
 
     val model = Modelling.buildModel().fit(matches)
 
-    Modelling.saveModel(model, path = Wizard.modelPath)
+    Modelling.saveModel(model)
   }
 }

@@ -17,9 +17,9 @@ case class Card(
                  suit: String,
                  keywords: Seq[String],
                  meanings: Map[String, Seq[String]],
-                 Archetype: String,
-                 Numerology: String,
-                 Elemental: String
+                 Archetype: Option[String],
+                 Numerology: Option[String],
+                 Elemental: Option[String]
                ) {
   lazy val isValid: Boolean = name.nonEmpty & keywords.nonEmpty
 }
@@ -74,4 +74,13 @@ class CardRepository @Inject()(
       selector = BSONDocument(
         "id" -> id
       )).map(_.result[Card]))
+
+  def getCardRecommendation(profileId: Long): Future[Option[Card]] =
+    cardsCollection.flatMap(_.find(BSONDocument(
+      "id" -> getCardRecommendationId(profileId)
+    )).one[Card])
+
+  def getCardRecommendationId(profileId: Long): Int = {
+    18
+  }
 }

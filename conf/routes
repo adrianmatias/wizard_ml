@@ -2,17 +2,15 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET       /todos                      controllers.TodoController.getAllTodos
 GET       /matchs                     controllers.MatchController.getAllMatchs
 GET       /cards                      controllers.CardController.getAllCards
 GET       /cards/:id                  controllers.CardController.getCard(id: Long)
-GET       /todos/:id                  controllers.TodoController.getTodo(id: java.util.UUID)
+GET       /cardsRecommendation/:id    controllers.CardController.getCardRecommendation(id: Long)
+GET       /profiles                   controllers.ProfileController.getAllProfiles
+GET       /profiles/:id               controllers.ProfileController.getProfile(id: Long)
 + nocsrf
-POST      /todos                      controllers.TodoController.createTodo
 + nocsrf
-PATCH     /todos/:id                  controllers.TodoController.updateTodo(id: java.util.UUID)
 + nocsrf
-DELETE    /todos/:id                  controllers.TodoController.deleteTodo(id: java.util.UUID)
 
 # Swagger docs
 GET       /                           controllers.ApiDocsController.redirectToDocs
