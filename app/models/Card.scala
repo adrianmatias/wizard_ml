@@ -1,7 +1,7 @@
 package models
 
 import javax.inject.Inject
-import ml.MongoConf
+import ml.{InferenceMLeap, MongoConf}
 import play.modules.reactivemongo.ReactiveMongoApi
 import reactivemongo.api.bson.BSONDocument
 import reactivemongo.api.bson.collection.BSONCollection
@@ -37,6 +37,10 @@ class CardRepository @Inject()(
 
   import reactivemongo.play.json.compat
   import compat.json2bson._
+
+  val inferMLeap = new InferenceMLeap(
+    pathFilename = "jar:file:/home/mat/git_repos/wizzard_ml/ml/src/main/resources/models/recommendation_model-json.zip"
+  )
 
   private def cardsCollection: Future[BSONCollection] =
     reactiveMongoApi.database.map(_.collection(MongoConf.collectionCards))
@@ -81,6 +85,6 @@ class CardRepository @Inject()(
     )).one[Card])
 
   def getCardRecommendationId(profileId: Long): Int = {
-    18
+    inferMLeap.getTopCardId(profileId).toInt
   }
 }

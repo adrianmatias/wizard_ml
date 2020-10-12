@@ -11,6 +11,8 @@ object Wizard {
   val colRating = "rating"
 
   val nRecommendedCards = 3
+  val nCards = 78
+  val defaultCardId = 0
 
   val modelPath: String = config.getString("model.path")
   val modelMaxIter: Int = config.getInt("model.maxIter")

@@ -31,5 +31,6 @@ object Train {
     val model = Modelling.buildModel().fit(matches)
 
     Modelling.saveModel(model)
+    Modelling.saveModelMLeap(model, matches)
   }
 }

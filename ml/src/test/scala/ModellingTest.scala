@@ -9,10 +9,12 @@ import org.scalatest.matchers._
 class ModellingTest extends AnyFlatSpec with should.Matchers {
 
   implicit val sparkSession: SparkSession = SparkSessionMongo.build(MongoConf.collectionMatchs)
+  val profileIdNew: Int = Int.MaxValue
 
   behavior of this.getClass.getSimpleName
 
   Train()
+  val inferMLeap = new InferenceMLeap(pathFilename = Modelling.pathFilenameMLeap)
   val model: ALSModel = Modelling.loadModel()
 
   "trained model" should "infer valid recommendation" in {
@@ -31,7 +33,6 @@ class ModellingTest extends AnyFlatSpec with should.Matchers {
 
   "trained model" should "infer default recommendation for unknown profile" in {
 
-    val profileIdNew = Int.MaxValue
     val recommendation = Infer
       .getRelevantCards(model, profileIds = Seq(profileIdNew))
       .head
@@ -39,5 +40,17 @@ class ModellingTest extends AnyFlatSpec with should.Matchers {
     recommendation.profile should be(profileIdNew)
     recommendation.isValid should be(true)
     recommendation.isDefault should be(true)
+  }
+
+  "trained model mleap" should "infer valid recommendation" in {
+
+    val cardId = inferMLeap.getTopCardId(profileId = 1)
+    cardId should not be Wizard.defaultCardId
+  }
+
+  "trained model mleap" should "infer default recommendation for unknown profile" in {
+
+    val cardId = inferMLeap.getTopCardId(profileIdNew)
+    cardId should be(Wizard.defaultCardId)
   }
 }
